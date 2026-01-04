@@ -29,6 +29,6 @@ const userSchema=mongoose.Schema({
         required:true,
         default:""
     }
-},{timestamp:true});
+},{timestamps:true});
 const User=mongoose.model("User",userSchema)
 export default User;
