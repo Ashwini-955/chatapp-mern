@@ -14,7 +14,7 @@ export const getUserBySearch=async(req,res)=>{
             }
         ]
         }).select("-password").select("email")
-        
+        res.status(200).send(user)
     } catch (error) {
         res.status(500).send({
             success:false,
