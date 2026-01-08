@@ -17,9 +17,10 @@ export default function Login() {
   const handleSubmit = async (e) => {
   e.preventDefault()
   setLoading(true)
+  console.log("SENDING JSON:", JSON.stringify(userInput))
 
   try {
-    const login = await axios.post("/api/auth/login", userInput)
+    const login = await axios.post("http://127.0.0.1:3000/api/auth/login", userInput)
     const data = login.data
 
     if (data.success === false) {
@@ -35,7 +36,7 @@ export default function Login() {
 
   } catch (error) {
     setLoading(false)
-    toast.error(error.response?.data?.message || "Login failed")
+    toast.error(error?.response?.data?.message)
     console.log(error)
   }
 }
