@@ -86,6 +86,7 @@ export default function Register() {
           <option value="">Select Gender</option>
           <option value="male">Male</option>
           <option value="female">Female</option>
+          <option value="male">others</option>
         </select>
 
         <label className="block text-xl font-semibold mb-1">Email</label>

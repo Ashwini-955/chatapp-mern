@@ -1,9 +1,11 @@
 import express from "express";
-import { userRegister,userLogin,userLogout,forgotPassword } from "../routControllers/userRoutControllers.js";
+import { userRegister,userLogin,userLogout,forgotPassword,resetPassword } from "../routControllers/userRoutControllers.js";
 
 const router= express.Router();
 router.post("/register",userRegister)
 router.post("/login",userLogin)
 router.post("/logout",userLogout)
 router.post("/forgot-password",forgotPassword)
+router.post("/reset-password/:token", resetPassword);
+
 export default router
