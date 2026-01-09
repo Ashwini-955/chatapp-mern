@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
+
 const userSchema=mongoose.Schema({
+    
     fullname:{
         type:String,
         required:true
@@ -28,6 +30,12 @@ const userSchema=mongoose.Schema({
         type:String,
         required:true,
         default:""
+    },
+    resetPasswordToken: {
+      type: String
+    },
+    resetPasswordExpire: {
+      type: Date
     }
 },{timestamps:true});
 const User=mongoose.model("User",userSchema)

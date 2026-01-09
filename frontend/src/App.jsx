@@ -3,6 +3,7 @@ import bg from "/bg.png"
 import { ToastContainer } from "react-toastify"
 import { Route, Routes } from "react-router-dom"
 import "react-toastify/dist/ReactToastify.css"
+import Register from "./register/Register.jsx"
 
 export default function App() {
   return (
@@ -17,7 +18,7 @@ export default function App() {
       >
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </div>
 

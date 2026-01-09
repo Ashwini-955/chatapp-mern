@@ -1,6 +1,7 @@
 import User from "../Models/userModels.js";
 import bcryptjs from "bcryptjs";
 import jwtToken from "../utils/jwtWebToken.js"
+import crypto from "crypto";
 export const userRegister = async (req, res) => {
   try {
     const { fullname, username, email, gender, password, profilepic } = req.body;
@@ -110,3 +111,47 @@ export const userLogout=async(req,res)=>{
         });
     }
 }
+export const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email)
+      return res.status(400).json({ message: "Email is required" });
+
+    const user = await User.findOne({ email });
+    if (!user)
+      return res.status(404).json({ message: "User not found" });
+
+    // generate reset token
+    const resetToken = crypto.randomBytes(32).toString("hex");
+
+    // hash token before saving
+    const hashedToken = crypto
+      .createHash("sha256")
+      .update(resetToken)
+      .digest("hex");
+
+    user.resetPasswordToken = hashedToken;
+    user.resetPasswordExpire = Date.now() + 10 * 60 * 1000; // 10 mins
+
+    await user.save();
+
+    const resetUrl = `http://localhost:3000/reset-password/${resetToken}`;
+
+    // 🔴 for now just console log (email later)
+    console.log("Reset Password URL:", resetUrl);
+
+    return res.status(200).json({
+      success: true,
+      message: "Password reset link sent to email",
+      resetUrl // remove this in production
+    });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
