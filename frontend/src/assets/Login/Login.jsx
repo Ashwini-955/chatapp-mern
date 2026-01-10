@@ -4,7 +4,10 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { useAuth } from "../../context/AuthContext";
+
 export default function Login() {
+  const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [userInput, setUserInput] = useState({});
   const [loading, setLoading] = useState(false);
@@ -22,11 +25,11 @@ export default function Login() {
     console.log("SENDING JSON:", JSON.stringify(userInput));
 
     try {
-      const login = await axios.post(
+      const res = await axios.post(
         "http://127.0.0.1:3000/api/auth/login",
         userInput
       );
-      const data = login.data;
+      const data = res.data;
 
       if (data.success === false) {
         toast.error(data.message);
@@ -35,8 +38,9 @@ export default function Login() {
       }
 
       toast.success(data.message);
-      localStorage.setItem("chatapp", JSON.stringify(data));
+      
       setLoading(false);
+      login(data);
       navigate("/");
     } catch (error) {
       setLoading(false);

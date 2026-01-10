@@ -12,6 +12,7 @@ export const getUserBySearch=async(req,res)=>{
                     {fullname:{$regex:'.*'+search+'.*',$options:'i'}},
                 ]
             },
+            
             {
                 _id:{$ne:currentUserId}
             }

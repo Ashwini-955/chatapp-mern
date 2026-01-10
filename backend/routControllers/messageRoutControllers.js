@@ -53,7 +53,6 @@ export const sendMessage =async(req,res)=>{
     const message=chats.messages;
     res.status(200).send(message)
 
-    return res.status(200).json(chats.messages);
 
   } catch (error) { 
     console.error(error);

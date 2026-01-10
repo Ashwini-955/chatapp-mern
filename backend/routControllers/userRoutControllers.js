@@ -38,7 +38,7 @@ export const userRegister = async (req, res) => {
     jwtToken(newUser._id, res);
 
     res.status(201).json({
-      success: true,
+      success: true, 
       id: newUser._id,
       fullname: newUser.fullname,
       username: newUser.username,
@@ -159,8 +159,9 @@ export const forgotPassword = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: error.message
-    });
+    }); 
   }
+  
 };
 export const resetPassword = async (req, res) => {
   try {
