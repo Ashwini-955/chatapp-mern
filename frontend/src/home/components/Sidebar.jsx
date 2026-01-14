@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
+import { FaSignOutAlt } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useAuth } from "../../context/AuthContext";
@@ -9,7 +10,7 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
   const [loading, setLoading] = useState(false);
   const [searchUser, setSearchUser] = useState([]);
   const [currentChatters, setCurrentChatters] = useState([]);
-  const { authUser } = useAuth();
+  const { authUser, logout } = useAuth();
 
   useEffect(() => {
     const fetchCurrentChatters = async () => {
@@ -145,6 +146,21 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
         ) : (
           <p className="text-gray-500 text-center py-4">No recent chats. Search for users to start chatting</p>
         )}
+      </div>
+
+      {/* Logout Button */}
+      <div className="p-4 border-t border-gray-200">
+        <button
+          onClick={() => {
+            if (window.confirm("Are you sure you want to log out?")) {
+              logout();
+            }
+          }}
+          className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-red-50 text-red-600 transition"
+        >
+          <FaSignOutAlt />
+          <span>Logout</span>
+        </button>
       </div>
     </div>
   );
