@@ -8,6 +8,7 @@ const jwtToken=(userId,res)=>{
   httpOnly: true,
   sameSite: "lax",
   secure: false,
+  domain: "localhost",
   path:"/",
 });
 

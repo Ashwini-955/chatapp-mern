@@ -22,9 +22,9 @@ export const userRegister = async (req, res) => {
     const hashPassword = bcryptjs.hashSync(password, 10);
 
     const profileBoy =
-      profilepic || `https://avatar.iran.liara.run/public/boy?username=${username}`;
+      profilepic || `https://ui-avatars.com/api/?name=${encodeURIComponent(fullname)}&background=0D8ABC&color=fff&size=100`;
     const profileGirl =
-      profilepic || `https://avatar.iran.liara.run/public/girl?username=${username}`;
+      profilepic || `https://ui-avatars.com/api/?name=${encodeURIComponent(fullname)}&background=FF69B4&color=fff&size=100`;
 
     const newUser = await User.create({
       fullname,

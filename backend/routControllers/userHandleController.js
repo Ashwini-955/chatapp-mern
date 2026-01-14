@@ -5,7 +5,7 @@ export const getUserBySearch=async(req,res)=>{
     try {
         const search =req.query.search || '';
         const currentUserId = req.user._id;
-        const user =await User.find({
+        const users =await User.find({
             $and:[{
                 $or:[
                     {username:{$regex:'.*'+search+'.*',$options:'i'}},
@@ -18,7 +18,32 @@ export const getUserBySearch=async(req,res)=>{
             }
         ]
         }).select("-password").select("email")
-        res.status(200).send(user)
+
+        // Sort users by relevance score
+        const sortedUsers = users.sort((a, b) => {
+            const searchLower = search.toLowerCase();
+            const aUsername = a.username.toLowerCase();
+            const aFullname = a.fullname.toLowerCase();
+            const bUsername = b.username.toLowerCase();
+            const bFullname = b.fullname.toLowerCase();
+
+            const getScore = (username, fullname) => {
+                if (username === searchLower) return 10;
+                if (fullname === searchLower) return 9;
+                if (username.startsWith(searchLower)) return 8;
+                if (fullname.startsWith(searchLower)) return 7;
+                if (username.includes(searchLower)) return 6;
+                if (fullname.includes(searchLower)) return 5;
+                return 0;
+            };
+
+            const scoreA = getScore(aUsername, aFullname);
+            const scoreB = getScore(bUsername, bFullname);
+
+            return scoreB - scoreA; // Higher score first
+        });
+
+        res.status(200).send(sortedUsers)
     } catch (error) {
         res.status(500).send({
             success:false,

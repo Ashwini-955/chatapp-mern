@@ -18,7 +18,6 @@ export default function Login() {
       [e.target.id]: e.target.value,
     });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -26,8 +25,9 @@ export default function Login() {
 
     try {
       const res = await axios.post(
-        "http://127.0.0.1:3000/api/auth/login",
-        userInput
+        "http://localhost:3000/api/auth/login",
+        userInput,
+        { withCredentials: true }
       );
       const data = res.data;
 
