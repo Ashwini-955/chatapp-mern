@@ -7,11 +7,11 @@ const Home = () => {
   const [selectedUser, setSelectedUser] = useState(null);
 
   return (
-    <div className="h-screen w-full bg-white flex" >
+    <div className="h-screen w-full bg-white flex overflow-hidden" >
       <div>
         <Sidebar selectedUser={selectedUser} setSelectedUser={setSelectedUser}/>
       </div>
-      <div className="flex-1">
+      <div className="flex-1 h-full">
         <MessageContainer selectedUser={selectedUser}/>
       </div>
     </div>

@@ -9,14 +9,26 @@ const MessageContainer = ({ selectedUser }) => {
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
+  const messagesContainerRef = useRef(null);
+  const [isAtBottom, setIsAtBottom] = useState(true);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const handleScroll = () => {
+    const container = messagesContainerRef.current;
+    if (container) {
+      const { scrollTop, scrollHeight, clientHeight } = container;
+      setIsAtBottom(scrollTop + clientHeight >= scrollHeight - 10); // 10px threshold
+    }
+  };
+
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    if (isAtBottom) {
+      scrollToBottom();
+    }
+  }, [messages, isAtBottom]);
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -65,7 +77,7 @@ const MessageContainer = ({ selectedUser }) => {
   }
 
   return (
-    <div className="flex-1 flex flex-col bg-gray-50">
+    <div className="h-full flex flex-col bg-gray-50">
       {/* Header */}
       <div className="bg-white px-4 py-3 border-b border-gray-200 flex items-center gap-3">
         <img
@@ -80,7 +92,7 @@ const MessageContainer = ({ selectedUser }) => {
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
+      <div ref={messagesContainerRef} onScroll={handleScroll} className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
         {loading ? (
           <p className="text-center text-gray-500">Loading messages...</p>
         ) : messages.length === 0 ? (

@@ -63,7 +63,7 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
   };
 
   return (
-    <div className="h-screen w-72 bg-white/90 backdrop-blur-xl border-r border-gray-200 flex flex-col">
+    <div className="h-full w-72 bg-white/90 backdrop-blur-xl border-r border-gray-200 flex flex-col">
       {/* Header / Search */}
       <div className="px-4 pt-4 pb-3 bg-cyan-100">
         <form
