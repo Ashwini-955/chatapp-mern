@@ -61,7 +61,8 @@ const MessageContainer = ({ selectedUser }) => {
         { message: newMessage },
         { withCredentials: true }
       );
-      setMessages((prev) => [...prev, response.data]);
+      console.log('Message sent:', selectedUser._id);
+      
       setNewMessage('');
     } catch (error) {
       console.error('Failed to send message:', error);
@@ -98,25 +99,36 @@ const MessageContainer = ({ selectedUser }) => {
         ) : messages.length === 0 ? (
           <p className="text-center text-gray-500">No messages yet. Start the conversation!</p>
         ) : (
-          messages.map((msg) => (
-            <div
-              key={msg._id}
-              className={`flex ${msg.senderId.toString() === authUser.id ? 'justify-end' : 'justify-start'}`}
-            >
-              <div
-                className={`max-w-xs px-4 py-2 rounded-lg ${
-                  msg.senderId.toString() === authUser.id
-                    ? 'bg-cyan-500 text-white'
-                    : 'bg-white text-gray-800'
-                }`}
-              >
-                <p>{msg.message}</p>
-                <p className="text-xs mt-1 opacity-70">
-                  {new Date(msg.createdAt).toLocaleTimeString()}
-                </p>
-              </div>
-            </div>
-          ))
+
+          messages.map((msg) => {
+  const isMe =
+                  msg.senderId?.toString() === authUser?.id?.toString();
+                  
+
+
+  return (
+    <div
+  key={msg._id}
+  className={`flex w-full ${isMe ? 'justify-end' : 'justify-start'}`}
+>
+  <div
+    className={`max-w-xs px-4 py-2 rounded-lg ${
+      isMe
+        ? 'bg-cyan-500 text-white ml-auto'
+        : 'bg-white text-gray-800 mr-auto'
+    }`}
+  >
+    <p>{msg.message}</p>
+    <p className="text-xs mt-1 opacity-70 text-right">
+      {new Date(msg.createdAt).toLocaleTimeString()}
+    </p>
+  </div>
+</div>
+
+  );
+})
+
+
         )}
         <div ref={messagesEndRef} />
       </div>
