@@ -77,7 +77,7 @@ export const userLogin = async (req, res) => {
       });
     }
 
-    jwtToken(user._id, res);
+     const generatToken = jwtToken(user._id, res);
 
     res.status(200).json({
       success: true,
@@ -87,6 +87,7 @@ export const userLogin = async (req, res) => {
       profilepic: user.profilepic,
       email: user.email,
       message: "Successfully logged in",
+      token: generatToken
     });
 
   } catch (error) {
@@ -112,7 +113,7 @@ export const userLogout=async(req,res)=>{
             message: error.message
         });
     }
-}
+  }
 
 export const forgotPassword = async (req, res) => {
   try {

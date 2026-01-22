@@ -4,6 +4,8 @@ import { FaSignOutAlt } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useAuth } from "../../context/AuthContext";
+import { useSocketContext } from "../../context/SocketContext";
+
 
 const Sidebar = ({ selectedUser, setSelectedUser }) => {
   const [searchInput, setSearchInput] = useState("");
@@ -11,6 +13,7 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
   const [searchUser, setSearchUser] = useState([]);
   const [currentChatters, setCurrentChatters] = useState([]);
   const { authUser, logout } = useAuth();
+  const { onlineUsers } = useSocketContext(); //online users
 
   useEffect(() => {
     const fetchCurrentChatters = async () => {
@@ -100,7 +103,10 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
       {/* Chat/User List */}
       <div className="flex-1 overflow-y-auto px-2 py-2 space-y-1">
         {searchUser.length > 0 ? (
-          searchUser.map((user) => (
+          searchUser.map((user) => { // search user ka map 
+            const isOnline = onlineUsers.includes(user._id);
+
+            return (
             <div
               key={user._id}
               className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer hover:bg-cyan-50 transition ${
@@ -119,10 +125,21 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
                   {user.username}
                 </p>
               </div>
+              {/* 🔥 Online Dot */}
+      <span
+        className={`w-2.5 h-2.5 rounded-full ${
+          isOnline ? "bg-green-500" : "bg-gray-400"
+        }`}
+      />
             </div>
-          ))
+          )
+})
+
         ) : currentChatters.length > 0 ? (
-          currentChatters.map((user) => (
+          currentChatters.map((user) => {
+            const isOnline = onlineUsers.includes(user._id);
+
+            return (            
             <div
               key={user._id}
               className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer hover:bg-cyan-50 transition ${
@@ -141,8 +158,15 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
                   {user.username}
                 </p>
               </div>
+              {/* 🔥 Online Dot */}
+      <span
+        className={`w-2.5 h-2.5 rounded-full ${
+          isOnline ? "bg-green-500" : "bg-gray-000"
+        }`}
+      />
             </div>
-          ))
+          )
+})
         ) : (
           <p className="text-gray-500 text-center py-4">No recent chats. Search for users to start chatting</p>
         )}

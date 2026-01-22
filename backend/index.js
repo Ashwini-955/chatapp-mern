@@ -6,9 +6,15 @@ import messageRouter from './route/messagerout.js'
 import userRouter from './route/userRoute.js'
 import cookieParser from "cookie-parser";
 import cors from "cors"
-
-const app=express();
+import http from "http";
+import { initSocket } from "./socket.js";
 dotenv.config();
+const app = express();
+const server = http.createServer(app);
+
+initSocket(server);
+
+
 app.get("/",(req,res)=>{
     res.send("working on the server");
 })
@@ -26,7 +32,7 @@ app.use('/api/user',userRouter)
 
 
 const PORT =process.env.PORT||3000 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   dbConnect()
   console.log(`Server running on port ${PORT}`)
 })

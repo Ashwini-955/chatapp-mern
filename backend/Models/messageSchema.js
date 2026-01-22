@@ -20,7 +20,12 @@ const messageSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Conversation",
       required: true
-    }
+    },
+    status: {
+      type: String,
+      enum: ["sent", "delivered", "seen"],
+      default: "sent",   // 🔥 new field
+    },
   },
   { timestamps: true }
 );

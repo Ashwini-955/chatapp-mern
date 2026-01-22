@@ -11,7 +11,7 @@ const jwtToken=(userId,res)=>{
   domain: "localhost",
   path:"/",
 });
-
+return token;
 }
 
 export default jwtToken
